@@ -1,15 +1,18 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/shared/guard/auth.guard';
+import { User } from 'src/shared/decorator/user.decorator';
 
 @ApiTags('User')
 @Controller('user')
 export class UserController {
 
   @ApiBearerAuth()
+  @UseGuards(new AuthGuard())
   @Get()
   async get() {
-    return await {
-      message: 'user'
+    return {
+      message: 'protected route'
     }
   }
 }

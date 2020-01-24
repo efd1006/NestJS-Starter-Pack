@@ -6,4 +6,6 @@ export const env = {
   DB_DATABASE: 'nestjs_template',
   DB_USERNAME: 'root',
   DB_PASSWORD: 'root',
+  JWT_SECRET: 'secret',
+  JWT_EXPIRES_IN: '7d'
 }

@@ -5,7 +5,8 @@ import { Repository } from 'typeorm';
 import { RegisterDTO } from './dto/register.dto';
 import { LoginDTO } from './dto/Login.dto';
 import * as bcrypt from 'bcryptjs'
-import { UserDTO } from 'src/user/dto/user.dto';
+import * as jwt from 'jsonwebtoken'
+import { env } from '../shared/environment/environment'
 
 @Injectable()
 export class AuthService {
@@ -41,12 +42,26 @@ export class AuthService {
     }
 
     user = this.omit(user, ['password'])
-
+    let token = await this.getToken(user)
     return {
-      user
+      user,
+      token
     }
   }
 
+
+  async getToken(user: UserEntity) {
+    const { id, email, role } = user
+    return await jwt.sign(
+      {
+        id,
+        email,
+        role
+      },
+      env.JWT_SECRET,
+      { expiresIn: env.JWT_EXPIRES_IN }
+    )
+  }
 
   async comparePassword(attempt: string, password: string) {
     return await bcrypt.compare(attempt, password)
