@@ -5,10 +5,12 @@ import { HttpExceptionFilter } from './shared/filter/http-exception.filter';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as helmet from 'helmet';
 import * as rateLimit from 'express-rate-limit';
+import { ValidationPipe } from './shared/pipe/validation.pipe';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalPipes(new ValidationPipe())
   app.use(helmet());
   app.enableCors();
   if(env.ENVIRONMENT == 'dev') {
