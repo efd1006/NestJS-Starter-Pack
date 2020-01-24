@@ -28,6 +28,23 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+Note: Change app config in src/shared/environment/environment.ts
+
+## Build docker image
+```bash
+$ docker build -t <image_name> .
+```
+
+## Run a docker container
+```bash
+$ docker run -it -p <port-external>:<port-internal> --name <container_name> -d <image_name>
+```
+
+## Access docker container
+```bash
+$ docker exec -it <container_name> sh
+```
+
 ## Installation
 
 ```bash
