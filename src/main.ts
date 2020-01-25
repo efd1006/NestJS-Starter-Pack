@@ -1,11 +1,29 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { env } from './shared/environment/environment'
 import { HttpExceptionFilter } from './shared/filter/http-exception.filter';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as helmet from 'helmet';
 import * as rateLimit from 'express-rate-limit';
 import { ValidationPipe } from './shared/pipe/validation.pipe';
+import { CrudConfigService } from '@nestjsx/crud';
+
+// Important: load config before (!!!) you import AppModule
+// https://github.com/nestjsx/crud/wiki/Controllers#global-options
+CrudConfigService.load({
+  query: {
+    limit: 25,
+  },
+  routes: {
+    updateOneBase: {
+      allowParamsOverride: true,
+    },
+    deleteOneBase: {
+      returnDeleted: true,
+    },
+  },
+});
+
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
